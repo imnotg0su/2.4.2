@@ -1,7 +1,6 @@
 package crudApp.dao;
 
 import crudApp.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -15,12 +14,6 @@ public class UserDaoImpl implements UserDAO{
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Autowired
-    public UserDaoImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
-
     @Override
     public List<User> allUsers() {
         return entityManager.createQuery("select u from User u", User.class).getResultList();
@@ -33,17 +26,12 @@ public class UserDaoImpl implements UserDAO{
 
     @Override
     public void delete(int id) {
-        entityManager.remove(id);
+        entityManager.remove(entityManager.find(User.class, id));
     }
 
     @Override
-    public void edit(int id) {
-        entityManager.merge(id);
-//        User toChangUser = userById(id);
-//        toChangUser.setName(changedUser.getName());
-//        toChangUser.setSurname(changedUser.getSurname());
-//        toChangUser.setAge(changedUser.getAge());
-//        toChangUser.setStatus(changedUser.getStatus());
+    public void edit(User user) {
+        entityManager.merge(user);
     }
 
     @Override

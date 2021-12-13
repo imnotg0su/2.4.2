@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class UserServiceImpl implements UserService{
 
     private final UserDAO userDAO;
@@ -35,8 +35,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void edit(int id) {
-        userDAO.edit(id);
+    public void edit(User user) {
+        userDAO.edit(user);
     }
 
     @Override

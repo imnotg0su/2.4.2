@@ -4,7 +4,7 @@ package crudApp.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users231")
+@Table(name = "users")
 public class User {
 
     @Id
