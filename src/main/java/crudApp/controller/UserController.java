@@ -1,8 +1,10 @@
 package crudApp.controller;
 
 import crudApp.model.User;
+import crudApp.service.RoleService;
 import crudApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private UserService userService;
+    private RoleService roleService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/")
@@ -24,15 +28,16 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String showUser(@PathVariable int id, Model model) {
-        model.addAttribute("user", userService.userById(id));
+    public String showUser(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
+        model.addAttribute("roles", user.getRoles());
         return "user";
     }
 
     @GetMapping("/newUser")
     public String newUser (Model model) {
         model.addAttribute("user", new User());
-
+        model.addAttribute("roles", roleService.allRoles());
         return "newUser";
     }
 
@@ -45,6 +50,7 @@ public class UserController {
     @GetMapping("/{id}/edit")
     public String edit (Model model, @PathVariable int id) {
         model.addAttribute("user", userService.userById(id));
+        model.addAttribute("roles", roleService.allRoles());
         return "edit";
     }
 
