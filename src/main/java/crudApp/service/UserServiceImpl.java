@@ -3,6 +3,7 @@ package crudApp.service;
 import crudApp.dao.UserDAO;
 import crudApp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService{
 
     private final UserDAO userDAO;
+
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     public UserServiceImpl(UserDAO userDAO) {
@@ -27,6 +30,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void add(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDAO.add(user);
     }
 
@@ -37,6 +41,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void edit(User user) {
+        if (!user.getPassword().equals(getUserByName(user.getUsername()).getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userDAO.edit(user);
     }
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -37,6 +38,11 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public void editRole(Role role) {
         roleDao.editRole(role);
+    }
+
+    @Override
+    public HashSet<Role> getRoleSet(String[] s) {
+        return roleDao.getRoleSet(s);
     }
 
     @Override

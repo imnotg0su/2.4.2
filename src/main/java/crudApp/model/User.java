@@ -96,7 +96,9 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     @Override
     public boolean equals(Object o) {

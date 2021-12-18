@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class RoleDaoImpl implements RoleDao {
@@ -31,6 +33,15 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public void editRole(Role role) {
         entityManager.merge(role);
+    }
+
+    @Override
+    public HashSet<Role> getRoleSet(String[] s) {
+        Set<Role> roleSet = new HashSet<>();
+        for (String role : s) {
+            roleSet.add(getRoleByName(role));
+        }
+        return (HashSet) roleSet;
     }
 
     @Override

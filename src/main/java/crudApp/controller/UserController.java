@@ -42,8 +42,9 @@ public class UserController {
     }
 
     @PostMapping()
-    public String createUser(@ModelAttribute ("user") User user) {
+    public String createUser(@ModelAttribute ("user") User user, @RequestParam(value = "roleBox") String [] roleBox) {
         userService.add(user);
+        user.setRoles(roleService.getRoleSet(roleBox));
         return "redirect:/";
     }
 
@@ -55,7 +56,8 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public String editUser (@ModelAttribute User user) {
+    public String editUser (@ModelAttribute User user, @RequestParam(value = "roleBox") String [] roleBox) {
+        user.setRoles(roleService.getRoleSet(roleBox));
         userService.edit(user);
         return "redirect:/";
     }
